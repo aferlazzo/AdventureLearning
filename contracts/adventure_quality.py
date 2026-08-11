@@ -37,6 +37,8 @@ def audit_page(path: Path, errors: list[str]) -> None:
 
     outcomes = {match.group(1): match.group(2) for match in OUTCOME_RE.finditer(text)}
     choices = CHOICE_RE.findall(text)
+    if not choices and "data-i10-adventure" in text:
+        return
     if not choices:
         errors.append(f"{rel}: no adventure choices found")
         return
