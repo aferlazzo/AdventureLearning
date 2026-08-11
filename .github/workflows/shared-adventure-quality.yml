@@ -1,0 +1,31 @@
+name: Shared AdventureLearning quality contract
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  shared-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+
+      - name: Check out AdventureLearning standards
+        uses: actions/checkout@v4
+        with:
+          repository: aferlazzo/AdventureLearning
+          path: .adventure-learning
+
+      - name: Run shared structural contract
+        run: python .adventure-learning/contracts/adventure_quality.py .
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          while IFS= read -r -d '' file; do
+            node --check "$file"
+          done < <(find . -path './.git' -prune -o -path './.adventure-learning' -prune -o -name '*.js' -print0)
