@@ -64,6 +64,7 @@ def main() -> int:
         path for path in root.rglob("*")
         if path.is_file() and path.suffix.lower() in {".html", ".css", ".js", ".py", ".yml", ".yaml", ".md"}
         and ".git" not in path.parts
+        and ".adventure-learning" not in path.parts
         and "vendor" not in path.parts
     ]
 
